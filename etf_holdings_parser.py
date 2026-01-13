@@ -81,6 +81,17 @@ def extract_isin_from_identifiers(identifiers_elem) -> Optional[str]:
     if identifiers_elem is None:
         return None
 
+    # Check for direct <isin value="..."/> format (common in N-PORT files)
+    isin_elem = identifiers_elem.find('.//{*}isin')
+    if isin_elem is not None:
+        # Check for 'value' attribute
+        isin_value = isin_elem.get('value')
+        if isin_value:
+            return isin_value.strip()
+        # Check for text content
+        if isin_elem.text:
+            return isin_elem.text.strip()
+
     # Search for ISIN in nested structure using wildcard namespace
     for identifier in identifiers_elem:
         # Look for identifier type and value (namespace-agnostic)
@@ -94,8 +105,14 @@ def extract_isin_from_identifiers(identifiers_elem) -> Optional[str]:
         # Also check direct child elements (some formats use this)
         for child in identifier:
             tag = child.tag.split('}')[-1]  # Remove namespace
-            if tag == 'isin' and child.text:
-                return child.text.strip()
+            if tag == 'isin':
+                # Check for value attribute
+                isin_value = child.get('value')
+                if isin_value:
+                    return isin_value.strip()
+                # Check for text content
+                if child.text:
+                    return child.text.strip()
 
     return None
 
