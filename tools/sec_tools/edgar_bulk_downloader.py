@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Optional
 import xml.etree.ElementTree as ET
-from etf_holdings_parser import get_etf_holdings
+from .etf_holdings_parser import get_etf_holdings
 
 
 def get_nport_filing_urls(cik: str, user_agent: str = "ETF Parser research@example.com") -> List[Dict[str, str]]:

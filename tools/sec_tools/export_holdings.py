@@ -2,7 +2,7 @@
 Export ETF holdings to Excel and CSV files
 """
 
-from etf_holdings_parser import get_etf_holdings
+from .etf_holdings_parser import get_etf_holdings
 import pandas as pd
 
 # Parse the holdings

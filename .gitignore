@@ -36,12 +36,13 @@ env/
 .DS_Store
 Thumbs.db
 
-# Data files
+# Data files - only ignore generated XML files
 *.xml
-*.csv
-*.xlsx
 !sample*.xml
+!primary_doc.xml
 
 # Output directories
 nport_data/
 nport_data_*
+__pycache__/
+*.pyc
