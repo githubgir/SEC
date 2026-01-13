@@ -39,4 +39,5 @@ Thumbs.db
 # Data files
 *.xml
 *.csv
+*.xlsx
 !sample*.xml
