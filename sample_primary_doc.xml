@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edgarSubmission xmlns="http://www.sec.gov/edgar/nport" xmlns:ns2="http://www.sec.gov/edgar/nportshares">
+    <formData>
+        <genInfo>
+            <regName>Sample ETF Trust</regName>
+            <seriesName>Technology Select Sector SPDR Fund</seriesName>
+            <repPdDate>2024-03-31</repPdDate>
+        </genInfo>
+        <invstOrSec>
+            <name>Microsoft Corporation</name>
+            <title>Common Stock</title>
+            <cusip>594918104</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US5949181045</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>MSFT</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>INR2EJN1ERAN0W5ZP974</lei>
+            <balance>2450000</balance>
+            <units>NS</units>
+            <valUSD>1025000000</valUSD>
+            <pctVal>12.5423</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Apple Inc</name>
+            <title>Common Stock</title>
+            <cusip>037833100</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US0378331005</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>AAPL</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>HWUPKR0MPOU8FGXBT394</lei>
+            <balance>5100000</balance>
+            <units>NS</units>
+            <valUSD>918000000</valUSD>
+            <pctVal>11.2334</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>NVIDIA Corporation</name>
+            <title>Common Stock</title>
+            <cusip>67066G104</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US67066G1040</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>NVDA</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>549300S4KLFTLO7GSQ80</lei>
+            <balance>1200000</balance>
+            <units>NS</units>
+            <valUSD>854000000</valUSD>
+            <pctVal>10.4512</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Broadcom Inc</name>
+            <title>Common Stock</title>
+            <cusip>11135F101</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US11135F1012</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>AVGO</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>549300WV6GIDOZJLESSA</lei>
+            <balance>650000</balance>
+            <units>NS</units>
+            <valUSD>682000000</valUSD>
+            <pctVal>8.3456</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Salesforce Inc</name>
+            <title>Common Stock</title>
+            <cusip>79466L302</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US79466L3024</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>CRM</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>XHBXTVCKTA97VNXXXS74</lei>
+            <balance>2100000</balance>
+            <units>NS</units>
+            <valUSD>567000000</valUSD>
+            <pctVal>6.9378</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Oracle Corporation</name>
+            <title>Common Stock</title>
+            <cusip>68389X105</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US68389X1054</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>ORCL</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>1Z4GXXU7ZHVWFCD68N18</lei>
+            <balance>4200000</balance>
+            <units>NS</units>
+            <valUSD>524000000</valUSD>
+            <pctVal>6.4112</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Adobe Inc</name>
+            <title>Common Stock</title>
+            <cusip>00724F101</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US00724F1012</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>ADBE</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>549300Y6RJUZ59KDW381</lei>
+            <balance>870000</balance>
+            <units>NS</units>
+            <valUSD>478000000</valUSD>
+            <pctVal>5.8490</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Advanced Micro Devices Inc</name>
+            <title>Common Stock</title>
+            <cusip>007903107</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US0079031078</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>AMD</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>R2I72C950HOYXII45366</lei>
+            <balance>2900000</balance>
+            <units>NS</units>
+            <valUSD>456000000</valUSD>
+            <pctVal>5.5801</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Cisco Systems Inc</name>
+            <title>Common Stock</title>
+            <cusip>17275R102</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>US17275R1023</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>CSCO</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>L53E011EVBIWR25U7M42</lei>
+            <balance>7800000</balance>
+            <units>NS</units>
+            <valUSD>412000000</valUSD>
+            <pctVal>5.0412</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>US</invCountry>
+        </invstOrSec>
+        <invstOrSec>
+            <name>Accenture PLC Class A</name>
+            <title>Common Stock</title>
+            <cusip>G1151C101</cusip>
+            <identifiers>
+                <identifier>
+                    <identifierType>ISIN</identifierType>
+                    <identifierValue>IE00B4BNMY34</identifierValue>
+                </identifier>
+                <identifier>
+                    <identifierType>Ticker</identifierType>
+                    <identifierValue>ACN</identifierValue>
+                </identifier>
+            </identifiers>
+            <lei>5493004J06CI8LARQ075</lei>
+            <balance>1100000</balance>
+            <units>NS</units>
+            <valUSD>385000000</valUSD>
+            <pctVal>4.7123</pctVal>
+            <curCd>USD</curCd>
+            <assetCat>EC</assetCat>
+            <issuerCat>CORP</issuerCat>
+            <invCountry>IE</invCountry>
+        </invstOrSec>
+    </formData>
+</edgarSubmission>

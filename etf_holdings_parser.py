@@ -22,6 +22,7 @@ import xml.etree.ElementTree as ET
 from typing import Optional, Dict, List, Union
 from pathlib import Path
 from io import StringIO
+import os
 
 
 def download_edgar_xml(url: str) -> str:
@@ -245,6 +246,56 @@ def get_etf_holdings_from_url(url: str) -> pd.DataFrame:
         file manually and use get_etf_holdings_from_file() instead.
     """
     xml_content = download_edgar_xml(url)
+    df = parse_etf_holdings(xml_content)
+    return df
+
+
+def get_etf_holdings(source: Union[str, Path]) -> pd.DataFrame:
+    """
+    Universal function to parse ETF holdings from URL, file path, or XML string.
+
+    This function automatically detects the source type and processes accordingly:
+    - If source starts with 'http://' or 'https://', treats as URL
+    - If source is a path to an existing file, reads the file
+    - Otherwise, treats as XML string content
+
+    Args:
+        source: URL string, file path, or XML string content
+
+    Returns:
+        DataFrame with ETF holdings including name, ISIN, value_usd, pct_value, etc.
+
+    Examples:
+        >>> # From URL
+        >>> df = get_etf_holdings("https://www.sec.gov/Archives/edgar/data/.../primary_doc.xml")
+
+        >>> # From file path
+        >>> df = get_etf_holdings("primary_doc.xml")
+        >>> df = get_etf_holdings("/path/to/primary_doc.xml")
+
+        >>> # From XML string
+        >>> xml_content = "<?xml version='1.0'?>..."
+        >>> df = get_etf_holdings(xml_content)
+
+    Raises:
+        requests.HTTPError: If URL download fails
+        FileNotFoundError: If file path doesn't exist
+        ET.ParseError: If XML content is malformed
+    """
+    source_str = str(source)
+
+    # Check if it's a URL
+    if source_str.startswith('http://') or source_str.startswith('https://'):
+        xml_content = download_edgar_xml(source_str)
+    # Check if it's a file path
+    elif os.path.exists(source_str):
+        with open(source_str, 'r', encoding='utf-8') as f:
+            xml_content = f.read()
+    # Treat as XML string
+    else:
+        xml_content = source_str
+
+    # Parse and return DataFrame
     df = parse_etf_holdings(xml_content)
     return df
 
