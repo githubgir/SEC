@@ -133,3 +133,42 @@ The function handles common issues:
 2. Search for your fund/ETF
 3. Look for "NPORT-P" filings
 4. Click on the filing and find the "primary_doc.xml" link
+
+## Bulk Download - Historical Filings
+
+Download ALL historical N-PORT filings for a fund automatically:
+
+```python
+from edgar_bulk_downloader import download_and_save_all_nport_filings
+
+# Download all filings for a fund (by CIK)
+df = download_and_save_all_nport_filings(
+    cik='1432353',  # Global X DAX Germany ETF
+    output_dir='nport_data'
+)
+
+# Creates individual CSV per date + combined CSV
+# nport_data/holdings_2024-01-31.csv
+# nport_data/holdings_2023-10-31.csv
+# nport_data/holdings_combined.csv
+```
+
+See [BULK_DOWNLOAD_GUIDE.md](BULK_DOWNLOAD_GUIDE.md) for complete documentation.
+
+### Key Functions
+
+- `get_nport_filing_urls(cik)` - Get list of all filing URLs
+- `download_and_save_all_nport_filings(cik)` - Download and save all filings
+- `get_filing_summary(cik)` - Get filing info without downloading
+
+## Export Functions
+
+Export holdings to Excel and CSV:
+
+```python
+from export_holdings import export_to_excel_and_csv
+
+# Export current holdings
+export_to_excel_and_csv('primary_doc.xml')
+# Creates: etf_holdings.xlsx and etf_holdings.csv
+```
