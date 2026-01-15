@@ -233,29 +233,28 @@ def test_regular_entry():
     print("Test: Regular Entry Rule")
     print("=" * 80)
 
-    # Test case: Regular entry is same as regular exit
+    # Test case: Regular entry uses regular_entry_rank = 40
     df = pd.DataFrame({
         'ticker': ['A', 'B', 'C', 'D'],
         'is_current_constituent': [True, True, False, False],
-        'market_cap_rank': [55, 40, 45, 50]
+        'market_cap_rank': [55, 50, 38, 45]
     })
 
-    print("\nTest Case: Regular entry should produce same result as regular exit")
+    print("\nTest Case: Regular entry with rank 38 candidate")
     print("Input:")
     print(df.to_string(index=False))
 
     result_entry = regular_entry(df)
-    result_exit = regular_exit(df)
 
     print("\nRegular Entry Output:")
     print(result_entry.to_string(index=False))
 
-    print("\nRegular Exit Output:")
-    print(result_exit.to_string(index=False))
-
-    # Verify they're identical
-    pd.testing.assert_frame_equal(result_entry, result_exit)
-    print("\n✓ Test passed: Regular entry and exit produce identical results")
+    # Verify: A (rank 55 > 53) removed, C (rank 38 <= 40) added
+    assert result_entry.loc[0, 'is_current_constituent'] == False, "Stock A should be removed (rank 55 > 53)"
+    assert result_entry.loc[1, 'is_current_constituent'] == True, "Stock B should remain"
+    assert result_entry.loc[2, 'is_current_constituent'] == True, "Stock C should be added (rank 38 <= 40)"
+    assert result_entry.loc[3, 'is_current_constituent'] == False, "Stock D should not be added (rank 45 > 40)"
+    print("\n✓ Test passed: Regular entry uses regular_entry_rank = 40")
 
     print("\n" + "=" * 80)
     print("All Regular Entry tests passed!\n")
@@ -294,11 +293,11 @@ def test_complete_review():
     df2 = pd.DataFrame({
         'ticker': ['A', 'B', 'C', 'D', 'E'],
         'is_current_constituent': [True, True, True, False, False],
-        'market_cap_rank': [60, 55, 40, 45, 50]
+        'market_cap_rank': [60, 55, 45, 38, 50]
     })
 
     print("\n" + "-" * 80)
-    print("Test Case 2: Regular Review")
+    print("Test Case 2: Regular Review (uses regular_entry_rank = 40)")
     print("Input:")
     print(df2.to_string(index=False))
 
@@ -306,9 +305,9 @@ def test_complete_review():
     print("\nOutput:")
     print(result2.to_string(index=False))
 
-    # Expected: B (55) removed, D (45) added
-    assert result2.loc[1, 'is_current_constituent'] == False, "B should be removed"
-    assert result2.loc[3, 'is_current_constituent'] == True, "D should be added"
+    # Expected: B (55 > 53) removed, D (38 <= 40) added
+    assert result2.loc[1, 'is_current_constituent'] == False, "B should be removed (rank 55 > 53)"
+    assert result2.loc[3, 'is_current_constituent'] == True, "D should be added (rank 38 <= 40)"
     print("✓ Test passed")
 
     print("\n" + "=" * 80)

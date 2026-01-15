@@ -18,6 +18,7 @@ Rank Limits for DAX Index:
     - FAST_EXIT_RANK = 60 (constituents with rank > 60 are removed)
     - FAST_ENTRY_RANK = 33 (non-constituents with rank <= 33 are added)
     - REGULAR_EXIT_RANK = 53 (constituents with rank > 53 can be removed)
+    - REGULAR_ENTRY_RANK = 40 (non-constituents with rank <= 40 are added during regular reviews)
     - ALT_CANDIDATE_RANK = 47 (alternative candidates must have rank <= 47)
 
 Note: All functions automatically sort by market_cap_rank at the start.
@@ -33,7 +34,7 @@ from typing import Optional
 DEFAULT_FAST_EXIT_RANK = 60
 DEFAULT_FAST_ENTRY_RANK = 33
 DEFAULT_REGULAR_EXIT_RANK = 53
-DEFAULT_REGULAR_ENTRY_RANK = 47  # Same as ALT_CANDIDATE_RANK
+DEFAULT_REGULAR_ENTRY_RANK = 40
 DEFAULT_ALT_CANDIDATE_RANK = 47
 
 
@@ -262,7 +263,7 @@ def regular_entry(
 
     Regular Entry Rule (from DAX Equity Index Methodology Guide, Page 34):
     Same rule as regular exit, viewed from the perspective of the entering company.
-    A non-constituent with rank <= 47 enters when a constituent with rank > 53 exits.
+    A non-constituent with rank <= 40 enters when a constituent with rank > 53 exits.
 
     This rule applies during semi-annual reviews (March and September).
 
@@ -281,7 +282,7 @@ def regular_entry(
         selection_index: DataFrame with columns:
             - is_current_constituent (bool): Whether the stock is currently in the index
             - market_cap_rank (int): Market capitalization rank (1 = highest market cap)
-        regular_entry_rank: Maximum rank for candidates to enter (default: 47 for DAX)
+        regular_entry_rank: Maximum rank for candidates to enter (default: 40 for DAX)
         regular_exit_rank: Minimum rank for constituents to be removed (default: 53 for DAX)
 
     Returns:
@@ -321,7 +322,7 @@ def apply_index_review(
         fast_exit_rank: Rank threshold for fast exit (default: 60 for DAX)
         fast_entry_rank: Rank threshold for fast entry (default: 33 for DAX)
         regular_exit_rank: Rank threshold for regular exit (default: 53 for DAX)
-        regular_entry_rank: Rank threshold for regular entry (default: 47 for DAX)
+        regular_entry_rank: Rank threshold for regular entry (default: 40 for DAX)
         alt_candidate_rank: Rank threshold for replacement candidates (default: 47 for DAX)
 
     Returns:
