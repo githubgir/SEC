@@ -19,6 +19,8 @@ Rank Limits for DAX Index:
     - FAST_ENTRY_RANK = 33 (non-constituents with rank <= 33 are added)
     - REGULAR_EXIT_RANK = 53 (constituents with rank > 53 can be removed)
     - ALT_CANDIDATE_RANK = 47 (alternative candidates must have rank <= 47)
+
+Note: All functions automatically sort by market_cap_rank at the start.
 """
 
 import pandas as pd
@@ -31,6 +33,7 @@ from typing import Optional
 DEFAULT_FAST_EXIT_RANK = 60
 DEFAULT_FAST_ENTRY_RANK = 33
 DEFAULT_REGULAR_EXIT_RANK = 53
+DEFAULT_REGULAR_ENTRY_RANK = 47  # Same as ALT_CANDIDATE_RANK
 DEFAULT_ALT_CANDIDATE_RANK = 47
 
 
@@ -42,10 +45,18 @@ def fast_exit(
     """
     Apply fast exit rule to index constituents.
 
-    Fast Exit Rule:
+    Fast Exit Rule (from DAX Equity Index Methodology Guide, Page 34):
+    "A company is excluded from the index if it has a rank worse than 60 in DAX [...]
+    for the criteria of free float market capitalisation. It is replaced by the company
+    with a rank equal or better than 47 in DAX [...]"
+
     A current constituent is removed from the index if its market cap rank is
     worse than (greater than) FAST_EXIT_RANK. It is replaced by the highest-ranked
     non-constituent with rank equal to or better than (<=) ALT_CANDIDATE_RANK.
+
+    Reference:
+        DAX Equity Index Methodology Guide (October 2023), Page 34
+        https://www.stoxx.com/document/News/2023/October/DAX%20Equity%20Index%20Methodology%20Guide_20231002.pdf
 
     Args:
         selection_index: DataFrame with columns:
@@ -59,14 +70,15 @@ def fast_exit(
 
     Example:
         >>> df = pd.DataFrame({
+        ...     'ticker': ['A', 'B', 'C', 'D'],
         ...     'is_current_constituent': [True, True, False, False],
-        ...     'market_cap_rank': [65, 30, 45, 50]
+        ...     'market_cap_rank': [65, 30, 40, 50]
         ... })
         >>> result = fast_exit(df)
-        >>> # Stock with rank 65 is removed, stock with rank 45 is added
+        >>> # Stock with rank 65 is removed, stock with rank 40 is added
     """
-    # Create a copy to avoid modifying the original
-    result = selection_index.copy()
+    # Create a copy and sort by market_cap_rank to avoid modifying the original
+    result = selection_index.copy().sort_values('market_cap_rank')
 
     # Find constituents that violate the fast exit rule (rank > fast_exit_rank)
     constituents_to_remove = result[
@@ -105,10 +117,18 @@ def fast_entry(
     """
     Apply fast entry rule to index constituents.
 
-    Fast Entry Rule:
+    Fast Entry Rule (from DAX Equity Index Methodology Guide, Page 34):
+    "A company is included in the index if it has a rank equal or better than 33 in DAX [...]
+    for the criteria of free float market capitalisation. The company that is removed from
+    the index will have a rank worse than 47 in DAX [...]"
+
     A non-constituent is added to the index if its market cap rank is equal to or
     better than (<=) FAST_ENTRY_RANK. The removed constituent will have a rank
     worse than (>) ALT_CANDIDATE_RANK.
+
+    Reference:
+        DAX Equity Index Methodology Guide (October 2023), Page 34
+        https://www.stoxx.com/document/News/2023/October/DAX%20Equity%20Index%20Methodology%20Guide_20231002.pdf
 
     Args:
         selection_index: DataFrame with columns:
@@ -122,15 +142,15 @@ def fast_entry(
 
     Example:
         >>> df = pd.DataFrame({
+        ...     'ticker': ['A', 'B', 'C', 'D'],
         ...     'is_current_constituent': [True, True, False, False],
         ...     'market_cap_rank': [50, 55, 30, 35]
         ... })
         >>> result = fast_entry(df)
         >>> # Stock with rank 30 is added, stock with rank 55 is removed
     """
-    # Create a copy to avoid modifying the original
-    result = selection_index.copy()
-
+    # Create a copy and sort by market_cap_rank
+    result = selection_index.copy().sort_values('market_cap_rank')
     # Find non-constituents that qualify for fast entry (rank <= fast_entry_rank)
     candidates_to_add = result[
         (result['is_current_constituent'] == False) &
@@ -168,10 +188,19 @@ def regular_exit(
     """
     Apply regular exit rule to index constituents.
 
-    Regular Exit Rule:
+    Regular Exit Rule (from DAX Equity Index Methodology Guide, Page 34):
+    "A company can be excluded from the index if it has a rank worse than 53 in DAX [...]
+    provided that there is a company that has a rank equal or better than 47 in DAX [...]"
+
+    This rule applies during semi-annual reviews (March and September).
+
     A current constituent can be removed from the index if its market cap rank is
     worse than (>) REGULAR_EXIT_RANK, provided that there is a non-constituent
     with rank equal to or better than (<=) ALT_CANDIDATE_RANK.
+
+    Reference:
+        DAX Equity Index Methodology Guide (October 2023), Page 34
+        https://www.stoxx.com/document/News/2023/October/DAX%20Equity%20Index%20Methodology%20Guide_20231002.pdf
 
     Args:
         selection_index: DataFrame with columns:
@@ -185,15 +214,15 @@ def regular_exit(
 
     Example:
         >>> df = pd.DataFrame({
+        ...     'ticker': ['A', 'B', 'C', 'D'],
         ...     'is_current_constituent': [True, True, False, False],
         ...     'market_cap_rank': [55, 40, 45, 60]
         ... })
         >>> result = regular_exit(df)
         >>> # Stock with rank 55 is removed, stock with rank 45 is added
     """
-    # Create a copy to avoid modifying the original
-    result = selection_index.copy()
-
+    # Create a copy and sort by market_cap_rank
+    result = selection_index.copy().sort_values('market_cap_rank')
     # Find constituents that can be removed (rank > regular_exit_rank)
     constituents_to_remove = result[
         (result['is_current_constituent'] == True) &
@@ -225,32 +254,42 @@ def regular_exit(
 
 def regular_entry(
     selection_index: pd.DataFrame,
-    regular_exit_rank: int = DEFAULT_REGULAR_EXIT_RANK,
-    alt_candidate_rank: int = DEFAULT_ALT_CANDIDATE_RANK
+    regular_entry_rank: int = DEFAULT_REGULAR_ENTRY_RANK,
+    regular_exit_rank: int = DEFAULT_REGULAR_EXIT_RANK
 ) -> pd.DataFrame:
     """
     Apply regular entry rule to index constituents.
 
-    Regular Entry Rule:
+    Regular Entry Rule (from DAX Equity Index Methodology Guide, Page 34):
+    Same rule as regular exit, viewed from the perspective of the entering company.
+    A non-constituent with rank <= 47 enters when a constituent with rank > 53 exits.
+
+    This rule applies during semi-annual reviews (March and September).
+
     A non-constituent is added to the index if its market cap rank is equal to or
-    better than (<=) ALT_CANDIDATE_RANK, provided that there is a constituent
+    better than (<=) REGULAR_ENTRY_RANK, provided that there is a constituent
     with rank worse than (>) REGULAR_EXIT_RANK.
 
-    This is essentially the same as regular_exit, just described from the perspective
+    This is functionally identical to regular_exit, just described from the perspective
     of the entering stock rather than the exiting stock.
+
+    Reference:
+        DAX Equity Index Methodology Guide (October 2023), Page 34
+        https://www.stoxx.com/document/News/2023/October/DAX%20Equity%20Index%20Methodology%20Guide_20231002.pdf
 
     Args:
         selection_index: DataFrame with columns:
             - is_current_constituent (bool): Whether the stock is currently in the index
             - market_cap_rank (int): Market capitalization rank (1 = highest market cap)
+        regular_entry_rank: Maximum rank for candidates to enter (default: 47 for DAX)
         regular_exit_rank: Minimum rank for constituents to be removed (default: 53 for DAX)
-        alt_candidate_rank: Maximum rank for candidates to enter (default: 47 for DAX)
 
     Returns:
         DataFrame with revised is_current_constituent column
 
     Example:
         >>> df = pd.DataFrame({
+        ...     'ticker': ['A', 'B', 'C', 'D'],
         ...     'is_current_constituent': [True, True, False, False],
         ...     'market_cap_rank': [55, 40, 45, 60]
         ... })
@@ -259,7 +298,7 @@ def regular_entry(
     """
     # Regular entry is functionally identical to regular exit
     # Just a different perspective on the same rule
-    return regular_exit(selection_index, regular_exit_rank, alt_candidate_rank)
+    return regular_exit(selection_index, regular_exit_rank, regular_entry_rank)
 
 
 def apply_index_review(
@@ -268,17 +307,21 @@ def apply_index_review(
     fast_exit_rank: int = DEFAULT_FAST_EXIT_RANK,
     fast_entry_rank: int = DEFAULT_FAST_ENTRY_RANK,
     regular_exit_rank: int = DEFAULT_REGULAR_EXIT_RANK,
+    regular_entry_rank: int = DEFAULT_REGULAR_ENTRY_RANK,
     alt_candidate_rank: int = DEFAULT_ALT_CANDIDATE_RANK
 ) -> pd.DataFrame:
     """
     Apply complete index review process.
 
     Args:
-        selection_index: DataFrame with eligible stocks
+        selection_index: DataFrame with columns:
+            - is_current_constituent (bool): Whether the stock is currently in the index
+            - market_cap_rank (int): Market capitalization rank (1 = highest market cap)
         review_type: Type of review - 'fast' (quarterly) or 'regular' (semi-annual)
         fast_exit_rank: Rank threshold for fast exit (default: 60 for DAX)
         fast_entry_rank: Rank threshold for fast entry (default: 33 for DAX)
         regular_exit_rank: Rank threshold for regular exit (default: 53 for DAX)
+        regular_entry_rank: Rank threshold for regular entry (default: 47 for DAX)
         alt_candidate_rank: Rank threshold for replacement candidates (default: 47 for DAX)
 
     Returns:
@@ -300,7 +343,7 @@ def apply_index_review(
         result = fast_entry(result, fast_entry_rank, alt_candidate_rank)
     elif review_type == 'regular':
         # Apply regular exit/entry (they're the same rule)
-        result = regular_exit(result, regular_exit_rank, alt_candidate_rank)
+        result = regular_exit(result, regular_exit_rank, regular_entry_rank)
     else:
         raise ValueError(f"Invalid review_type: {review_type}. Must be 'fast' or 'regular'")
 
@@ -312,6 +355,7 @@ MDAX_RANKS = {
     'fast_exit_rank': 110,
     'fast_entry_rank': 83,
     'regular_exit_rank': 103,
+    'regular_entry_rank': 97,
     'alt_candidate_rank': 97
 }
 
@@ -319,6 +363,7 @@ SDAX_RANKS = {
     'fast_exit_rank': 180,
     'fast_entry_rank': 153,
     'regular_exit_rank': 173,
+    'regular_entry_rank': 167,
     'alt_candidate_rank': 167
 }
 
@@ -326,6 +371,7 @@ TECDAX_RANKS = {
     'fast_exit_rank': 45,
     'fast_entry_rank': 25,
     'regular_exit_rank': 40,
+    'regular_entry_rank': 35,
     'alt_candidate_rank': 35
 }
 
